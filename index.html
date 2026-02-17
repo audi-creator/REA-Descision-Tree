@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>REA Service Flowchart</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(135deg, #6b8a9e 0%, #5f8195 100%);
+            padding: 40px 20px;
+            overflow-x: auto;
+        }
+        
+        .flowchart-container {
+            min-width: 1000px;
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 50px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        
+        .header h1 {
+            color: #2d3748;
+            font-size: 38px;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            color: #718096;
+            font-size: 18px;
+        }
+        
+        .flowchart {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .flow-box {
+            background: white;
+            border: 3px solid #6b8a9e;
+            border-radius: 12px;
+            padding: 25px 35px;
+            text-align: center;
+            max-width: 600px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        
+        .flow-box.start {
+            background: linear-gradient(135deg, #6b8a9e 0%, #5f8195 100%);
+            color: white;
+            border: none;
+            font-weight: 600;
+            font-size: 20px;
+        }
+        
+        .flow-box.question {
+            background: #edf2f7;
+            border-color: #4299e1;
+        }
+        
+        .flow-box.decision {
+            background: #fffbeb;
+            border-color: #f6ad55;
+            font-weight: 600;
+        }
+        
+        .arrow {
+            font-size: 32px;
+            color: #6b8a9e;
+            margin: 10px 0;
+        }
+        
+        .branches {
+            display: flex;
+            gap: 40px;
+            justify-content: center;
+            width: 100%;
+            max-width: 1200px;
+        }
+        
+        .branch {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .branch-label {
+            background: #48bb78;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 16px;
+        }
+        
+        .branch-label.no {
+            background: #f56565;
+        }
+        
+        .workflow-box {
+            background: white;
+            border: 3px solid #48bb78;
+            border-radius: 12px;
+            padding: 30px;
+            width: 100%;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        
+        .workflow-box.courtesy {
+            border-color: #48bb78;
+        }
+        
+        .workflow-box.paid {
+            border-color: #ed8936;
+        }
+        
+        .workflow-title {
+            font-size: 22px;
+            font-weight: 700;
+            color: #2d3748;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+        
+        .step {
+            margin-bottom: 20px;
+        }
+        
+        .step:last-child {
+            margin-bottom: 0;
+        }
+        
+        .step-number {
+            display: inline-block;
+            background: #6b8a9e;
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            font-weight: 600;
+            font-size: 15px;
+            margin-right: 10px;
+        }
+        
+        .step-text {
+            color: #2d3748;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+        
+        .script {
+            background: #edf2f7;
+            border-left: 4px solid #6b8a9e;
+            padding: 12px 15px;
+            margin: 8px 0;
+            border-radius: 4px;
+            font-style: italic;
+            font-size: 15px;
+            color: #2d3748;
+        }
+        
+        .warning {
+            background: #fff5f5;
+            border-left: 4px solid #f56565;
+            padding: 12px 15px;
+            margin: 8px 0;
+            border-radius: 4px;
+            font-size: 15px;
+        }
+        
+        .warning strong {
+            color: #c53030;
+        }
+        
+        .info {
+            background: #e6fffa;
+            border-left: 4px solid #38b2ac;
+            padding: 12px 15px;
+            margin: 8px 0;
+            border-radius: 4px;
+            font-size: 15px;
+        }
+        
+        ul {
+            margin: 8px 0 8px 35px;
+            font-size: 15px;
+        }
+        
+        ul li {
+            margin-bottom: 6px;
+            color: #4a5568;
+            line-height: 1.5;
+        }
+        
+        .split-branches {
+            display: flex;
+            gap: 40px;
+            margin-top: 20px;
+        }
+        
+        .sub-branch {
+            flex: 1;
+            min-width: 350px;
+        }
+        
+        .sub-label {
+            background: #48bb78;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 15px;
+            font-weight: 600;
+            font-size: 15px;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+        
+        .sub-label.decline {
+            background: #f56565;
+        }
+    </style>
+</head>
+<body>
+    <div class="flowchart-container">
+        <div class="header">
+            <h1>🎯 REA Service Decision Flowchart</h1>
+            <p>Complete workflow for exhibit assistance requests</p>
+        </div>
+        
+        <div class="flowchart">
+            <!-- Start -->
+            <div class="flow-box start">
+                Counsel asks you to help with exhibits
+            </div>
+            
+            <div class="arrow">↓</div>
+            
+            <!-- Step 1 -->
+            <div class="flow-box question">
+                <strong>STEP 1: Check Provider Dashboard</strong><br>
+                Go to Details → Job Info → Your Assigned Services<br>
+                Is REA service listed?
+            </div>
+            
+            <div class="arrow">↓</div>
+            
+            <!-- Decision Point -->
+            <div class="branches">
+                <!-- YES Branch - REA Pre-Ordered -->
+                <div class="branch">
+                    <div class="branch-label">✓ YES - REA Ordered</div>
+                    
+                    <div class="workflow-box">
+                        <div class="workflow-title">REA Pre-Ordered Workflow</div>
+                        
+                        <div class="step">
+                            <span class="step-number">1</span>
+                            <span class="step-text"><strong>Before Depo: Check Job Files</strong></span>
+                            <ul>
+                                <li>Go to Details → Job Files</li>
+                                <li>Download all exhibits, extract if zipped</li>
+                                <li>Count exhibits</li>
+                                <li><strong>If NO exhibits:</strong> Post in #video-help</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="step">
+                            <span class="step-number">2</span>
+                            <span class="step-text"><strong>In Zoom: Upload to SC App</strong></span>
+                            <ul>
+                                <li>Upload to Unmarked Exhibits</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="step">
+                            <span class="step-number">3</span>
+                            <span class="step-text"><strong>Confirm REA with TA</strong></span>
+                            <div class="script">"It looks like you've ordered Remote Exhibit Assistance for this proceeding. I want to confirm with you that I'll be marking and presenting your provided exhibits at your discretion today?"</div>
+                        </div>
+                        
+                        <div class="step">
+                            <span class="step-number">4</span>
+                            <span class="step-text"><strong>Confirm Exhibit Count</strong></span>
+                            <div class="script">"I have about [X] exhibits - does that sound correct to you?"</div>
+                            <div class="info">If count is wrong: Coordinate on how to receive missing exhibits</div>
+                        </div>
+                        
+                        <div class="step">
+                            <span class="step-number">5</span>
+                            <span class="step-text"><strong>Ask Coordination Questions</strong></span>
+                            <ul>
+                                <li>"How will you refer to exhibits?" (A/B/C, 1/2/3, Bates, file names?)</li>
+                                <li>"How should I know when to present?"</li>
+                                <li>"Save annotated exhibits?"</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="step">
+                            <span class="step-number">6</span>
+                            <span class="step-text"><strong>Proceed</strong></span>
+                            <div class="info"><strong>✓ Manage ALL exhibits as requested</strong></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- NO Branch - Not Ordered -->
+                <div class="branch">
+                    <div class="branch-label no">✗ NO - REA Not Ordered</div>
+                    
+                    <div class="flow-box decision">
+                        <strong>STEP 2: Count Exhibits Requested</strong><br>
+                        How many exhibits does counsel need?
+                    </div>
+                    
+                    <div class="arrow">↓</div>
+                    
+                    <div class="split-branches">
+                        <!-- 1-2 Exhibits -->
+                        <div class="sub-branch">
+                            <div class="sub-label">1-2 Exhibits</div>
+                            
+                            <div class="workflow-box courtesy">
+                                <div class="workflow-title">Courtesy Service</div>
+                                
+                                <div class="step">
+                                    <span class="step-number">1</span>
+                                    <span class="step-text"><strong>Offer Courtesy</strong></span>
+                                    <div class="info">Up to 2 exhibits at no charge</div>
+                                </div>
+                                
+                                <div class="step">
+                                    <span class="step-number">2</span>
+                                    <span class="step-text"><strong>Ask Questions</strong></span>
+                                    <ul>
+                                        <li>How will I receive them?</li>
+                                        <li>How will you refer to them?</li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="step">
+                                    <span class="step-number">3</span>
+                                    <span class="step-text"><strong>Process</strong></span>
+                                    <ul>
+                                        <li>Download → Upload to SC App</li>
+                                        <li>Label → Present</li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="warning">
+                                    <strong>⚠️ Stop at 2 maximum</strong>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 3+ Exhibits -->
+                        <div class="sub-branch">
+                            <div class="sub-label">3+ Exhibits</div>
+                            
+                            <div class="workflow-box paid">
+                                <div class="workflow-title">REA Service Required</div>
+                                
+                                <div class="step">
+                                    <span class="step-number">1</span>
+                                    <span class="step-text"><strong>Inform About Fee</strong></span>
+                                    <div class="script">"I'm happy to continue helping you share exhibits today, but just to let you know, there is an additional fee of up to $110/hour for this Remote Exhibit Assistant service. Would you like to proceed with that service?"</div>
+                                </div>
+                                
+                                <div class="step">
+                                    <span class="step-text"><strong>If TA Agrees:</strong></span>
+                                    <ul>
+                                        <li>Submit #video-help request</li>
+                                        <li>Wait for confirmation</li>
+                                        <li>Ask: How to receive? How to refer?</li>
+                                        <li>Receive → Upload → Label</li>
+                                        <li>Add worksheet note: "REA added mid-deposition"</li>
+                                        <li>Confirm readiness → Proceed</li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="step">
+                                    <span class="step-text"><strong>If TA Declines:</strong></span>
+                                    <div class="warning">
+                                        <strong>⚠️ Do NOT provide service</strong>
+                                        <ul>
+                                            <li>Escalate in #video-help</li>
+                                            <li>Tag Account Manager</li>
+                                            <li>Stop at 2 exhibits max</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
